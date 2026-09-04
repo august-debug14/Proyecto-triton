@@ -45,8 +45,9 @@ Proyecto triton/
 
 ```mermaid
 graph TD
+    T["test_caos.py - unittest"]:::test -.->|0. subprocess.run| A
     A["app_operator.py - CLI Entrypoint"] -->|1. Sanitiza con argparse| B[sanitizer.py]
-    A -->|2. Inicia asyncio.run| C[core.py]
+    A -->|2. Inicia asyncio.run| C["core.py - scan_all_providers"]
 
     C -->|3. Crea asyncio.TaskGroup| D["httpx.AsyncClient - AWS"]
     C -->|3. Crea asyncio.TaskGroup| E["httpx.AsyncClient - Azure"]
@@ -60,11 +61,15 @@ graph TD
     A -->|"5. Captura quirúrgica except*"| I["logging_engine.py - LogRecord"]
 
     I -->|6. Encola en microsegundos| J["queue.Queue - Thread-safe"]
-    J -->|7. Consume desatendido| K[QueueListener]
+    J -->|7. Consume desatendido| K["QueueListener - Hilo Secundario"]
 
     K -->|8. Formatea a JSON recursivo| L[AsyncJSONFormatter]
     K -->|9. Escribe y rota| M[RotatingFileHandler]
     M -->|10. Rollover y Gzip| N[triton_services.log.gz]
+
+    N -.->|11. Valida JSON y campos| T
+
+    classDef test stroke-dasharray: 5 5;
 ```
 
 ---
