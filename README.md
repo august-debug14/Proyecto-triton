@@ -43,7 +43,18 @@ Proyecto triton/
 
 ## 3° Diagrama de arquitectura
 
+```mermaid
+graph TD
+    test_caos.py --> app_operator.py
+    app_operator.py --> sanitizer.py
+    app_operator.py --> core.py
+    core.py --> exceptions.py
+    core.py --> logging_engine.py
+    app_operator.py --> logging_engine.py
+    logging_engine.py --> triton_services.log
+```
 
+---
 
 ## 4° Tecnologías usadas
 
