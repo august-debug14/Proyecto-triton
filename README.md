@@ -45,13 +45,14 @@ Proyecto triton/
 
 ```mermaid
 graph TD
-    test_caos.py --> app_operator.py
-    app_operator.py --> sanitizer.py
-    app_operator.py --> core.py
-    core.py --> exceptions.py
+    test_caos.py -->|ejecuta| app_operator.py
+    app_operator.py -->|valida entrada| sanitizer.py
+    app_operator.py -->|inicia escaneo| core.py
+    core.py -->|consulta APIs| AWS & Azure & GCP
+    core.py -->|maneja errores| exceptions.py
     core.py --> logging_engine.py
-    app_operator.py --> logging_engine.py
-    logging_engine.py --> triton_services.log
+    app_operator.py -->|registra logs| logging_engine.py
+    logging_engine.py -->|escribe| triton_services.log
 ```
 
 ---
